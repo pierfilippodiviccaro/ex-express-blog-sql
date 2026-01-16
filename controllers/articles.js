@@ -18,7 +18,7 @@ function index(req,res){
 //show
 function show(req,res){
     const id = req.params.id
-    const query ="SELECT * FROM `blog_db`.posts WHERE `blog_db`.`id` = ?"
+    const query ="SELECT * FROM `blog_db`.posts WHERE `blog_db`.posts.id= ?"
     connection.query(query, [id], (err, result)=>{
         if(err){
         res.status(500);
