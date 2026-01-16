@@ -18,15 +18,25 @@ function index(req,res){
 //show
 function show(req,res){
     const id = req.params.id
-    const articolo = articles.find(article=> article.id === id )
-    if(articolo === undefined){
-        res.status(404);
-        }
-        else{
-            res.json(articolo)
-
-        }
+    const query ="SELECT* FROM `blog_db` WHERE `blog_db`.id=?"
+    connection.query(query, [id], (err, result)=>{
+        if(err){
+        res.status(500);
+       return res.json({
+        message:"internal server error"
+       })
     }
+    if(result.length === 0){
+        res.status(404);
+        res.json({
+            message:"articolo non trovato"
+        })
+    }else{
+        const articolo = result[0];
+        res.json(articolo)
+    }
+   })
+}
 
 //store
 function store(req,res){
