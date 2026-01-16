@@ -1,12 +1,19 @@
 import {articles} from '../data.js'
-
+import connection from '../data/db.js'
 // index
 function index(req,res){
-    const risposta={
-        lunghezza: articles.length,
-        totale: articles
+   const query = "SELECT * FROM `blog_db`.posts"
+   connection.query(query,(err, result)=>{
+    if(err){
+        res.status(500);
+       return res.json({
+        message:"internal server error"
+       })
     }
-    res.json(risposta)
+    res.json({
+     results:result
+ })
+   })
 }
 //show
 function show(req,res){
