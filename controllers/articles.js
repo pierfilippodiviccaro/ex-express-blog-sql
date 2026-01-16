@@ -18,7 +18,7 @@ function index(req,res){
 //show
 function show(req,res){
     const id = req.params.id
-    const query ="SELECT* FROM `blog_db` WHERE `blog_db`.id=?"
+    const query ="SELECT * FROM `blog_db`.posts WHERE `blog_db`.`id` = ?"
     connection.query(query, [id], (err, result)=>{
         if(err){
         res.status(500);
@@ -74,15 +74,16 @@ function modify(req,res){
 //delete
 function destroy (req,res){
 const id = req.params.id
- const articolo = articles.findIndex(article=> article.id === id )
-    if(articolo === -1){
-        res.status(404);
-        return res.json({
-            message:"articolo non disponibile"
-        })
+const query = "DELETE FROM `blog_db`.posts WHERE `id` = ? "
+connection.query(query, [id], (err)=>{
+      if(err){
+        res.status(500);
+       return res.json({
+        message:"internal server error"
+       })
     }
-    articles.splice(articolo, 1)
-    res.status(204);
+    res.sendStatus(204);
+})
 }
 const controller = {
     index,
